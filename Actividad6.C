@@ -1,10 +1,14 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 
 int ordenable(int, char*[]);
 int length(char*);
 int comparaCads(char*, char*);
 char* copiaCad(char*, char*);
 void burbuja(int, char*[]);
+void burbujaNumeros(int, char*[]);
 void intercambiar(char*[], int);
 
 int main(int argc, char* argv[]){
@@ -14,13 +18,13 @@ int main(int argc, char* argv[]){
 	else
 		printf("\nNo se puede ordenar esta madre no mms xd\n\n");
 	
-	burbuja(argc, argv);	
-	
-	
+	burbuja(argc, argv);
+	//burbujaNumeros(argc, argv);	
 	
 	int i;
 	for (i = 1; i < argc - 3; i++)
 		printf("%s\n", *(argv+i));
+	
 	
 	//printf("\n%c Ponemos el acento o tilde en canel%cn\n",162, 162); //ó
 	//Es decir, invocar el código de carácter que corresponde a la letra acentuada...
@@ -66,7 +70,7 @@ int ordenable(int c, char* v[]){
 	
 	if ( v[(c - 3)][0] != 'N'){
 		if (v[(c - 3)][0] != 'C'){
-			printf("\nEror: Falta un argumento de tipo de elementos a ordenar A o D\n");
+			printf("\nEror: Falta un argumento de tipo de elementos a ordenar N o C\n");
 			return 0;
 		}
 	}
@@ -111,11 +115,30 @@ void burbuja(int c, char* v[]){
 
 	for (i = 1; i < c; i++){
 	       for (j = 1; j < (c - 4); j++){
-	       	
 	       	if (comparaCads(v[j], v[j + 1]) == formato)
 	       		intercambiar(v, j);
 		}
 	}
+}
+
+void burbujaNumeros(int c, char* v[]){
+	int i,j, a, b;
+
+	for (i = 1; i < c; i++){
+	       for (j = 1; j < (c - 4); j++){
+	       	a = strtol(v[j], NULL, 10);
+	       	b = strtol(v[j + 1], NULL, 10);
+	       	
+	       	if (v[c - 1][0] == 'A'){
+	       		if (a > b)
+	       			intercambiar(v, j);
+			}else {
+				if (a < b)
+	       			intercambiar(v, j);
+			}
+		}
+	}
+	
 }
 
 char* copiaCad(char* cad1, char* cad2){
