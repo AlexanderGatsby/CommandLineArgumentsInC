@@ -10,7 +10,7 @@ char* copiaCad(char*, char*);
 void burbuja(int, char*[]);
 void burbujaNumeros(int, char*[]);
 void intercambiar(char*[], int);
-void seleccion(int, char*[]);
+void insercion(int, char*[]);
 
 int main(int argc, char* argv[]){
 	
@@ -21,7 +21,7 @@ int main(int argc, char* argv[]){
 	
 	//burbuja(argc, argv);
 	//burbujaNumeros(argc, argv);
-	seleccion(argc, argv);
+	insercion(argc, argv);
 	
 	int i;
 	//for (i = 1; i < argc - 3; i++)
@@ -171,7 +171,7 @@ void intercambiar(char* v[], int i){
 	copiaCad(v[i], temporal);
 }
 
-void seleccion(int c, char* v[]){
+void insercion(int c, char* v[]){
 	int i,j;
 	
 	int formato = v[c - 1][0] == 'A'? 1 : -1;
