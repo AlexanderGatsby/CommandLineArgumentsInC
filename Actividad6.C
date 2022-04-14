@@ -4,6 +4,7 @@
 int ordenable(int, char*[]);
 int length(char*);
 int comparaCads(char*, char*);
+char comparaNums(int, int);
 char* copiaCad(char*, char*);
 void burbuja(int, char*[]);
 void burbujaNumeros(int, char*[]);
@@ -116,6 +117,16 @@ int comparaCads(char* cad1, char* cad2){
 	return 0;
 }
 
+char comparaNums(int a, int b){
+	
+	if (a > b)
+		return 'A';
+	else if (a < b)
+		return 'D';
+	
+	return 'N';	
+}
+
 void burbuja(int c, char* v[]){
 	
 	int i,j;
@@ -201,7 +212,7 @@ void insercionNumeros(int c, char* v[]){
 		claveNumero = strtol(v[i], NULL, 10);
 		j = i-1;
 		//Comparar el valor selecionado con todos los valores anteriores
-		while (j >= 1 && strtol(v[j], NULL, 10) > claveNumero){
+		while (j >= 1 && comparaNums(strtol(v[j], NULL, 10), claveNumero) ==  v[c - 1][0]){
 			//Desplazar el valor una posición a la derecha
 			copiaCad(v[j + 1], v[j]);
 			--j;
