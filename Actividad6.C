@@ -1,7 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-
 
 int ordenable(int, char*[]);
 int length(char*);
@@ -11,17 +9,19 @@ void burbuja(int, char*[]);
 void burbujaNumeros(int, char*[]);
 void intercambiar(char*[], int);
 void insercion(int, char*[]);
+void insercionNumeros(int, char*[]);
 
 int main(int argc, char* argv[]){
 	
 	if (ordenable(argc, argv) == 1)
 		printf("\nEs ordenable\n\n");
 	else
-		printf("\nNo se puede ordenar esta madre no mms xd\n\n");
+		printf("\nNo se puede ordenar\n\n");
 	
 	//burbuja(argc, argv);
 	//burbujaNumeros(argc, argv);
-	insercion(argc, argv);
+	//insercion(argc, argv);
+	insercionNumeros(argc, argv);
 	
 	int i;
 	//for (i = 1; i < argc - 3; i++)
@@ -188,7 +188,25 @@ void insercion(int c, char* v[]){
 			--j;
 		}
 		copiaCad(*(v+j+1), clave);
-	}    
-	
-	
+	}
 }
+
+void insercionNumeros(int c, char* v[]){
+	int i,j,claveNumero;
+   //Recorrer el arreglo
+	for (i = 2; i < (c - 3); i++){
+		char clave[length(v[i]) + 1];
+		copiaCad(clave, v[i]);
+		
+		claveNumero = strtol(v[i], NULL, 10);
+		j = i-1;
+		//Comparar el valor selecionado con todos los valores anteriores
+		while (j >= 1 && strtol(v[j], NULL, 10) > claveNumero){
+			//Desplazar el valor una posición a la derecha
+			copiaCad(v[j + 1], v[j]);
+			--j;
+		}
+		copiaCad(v[j + 1], clave);
+	}
+}
+
