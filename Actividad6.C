@@ -10,6 +10,7 @@ char* copiaCad(char*, char*);
 void burbuja(int, char*[]);
 void burbujaNumeros(int, char*[]);
 void intercambiar(char*[], int);
+void seleccion(int, char*[]);
 
 int main(int argc, char* argv[]){
 	
@@ -18,11 +19,13 @@ int main(int argc, char* argv[]){
 	else
 		printf("\nNo se puede ordenar esta madre no mms xd\n\n");
 	
-	burbuja(argc, argv);
-	//burbujaNumeros(argc, argv);	
+	//burbuja(argc, argv);
+	//burbujaNumeros(argc, argv);
+	seleccion(argc, argv);
 	
 	int i;
-	for (i = 1; i < argc - 3; i++)
+	//for (i = 1; i < argc - 3; i++)
+	for (i = 0; i < argc; i++)
 		printf("%s\n", *(argv+i));
 	
 	
@@ -90,12 +93,18 @@ int length(char *string){
 int comparaCads(char* cad1, char* cad2){
 	int i = 0;
 	
+	char a, b;
+	
 	while (*(cad1 + i) != '\0' && *(cad2 + i) != '\0'){
 		
-		if (*(cad1 + i) < *(cad2 + i))
+		a = (*(cad1 + i) > 96 && *(cad1 + i) < 123) ? *(cad1 + i) - 32 : *(cad1 + i);
+		b = (*(cad2 + i) > 96 && *(cad2 + i) < 123) ? *(cad2 + i) - 32 : *(cad2 + i);
+		
+		if (a < b)
 			return -1;
-		else if (*(cad1 + i) > *(cad2 + i))
+		else if (a > b)
 			return 1;
+		
 		i++;
 		
 		if (*(cad1 + i) == '\0')
@@ -160,4 +169,26 @@ void intercambiar(char* v[], int i){
 	copiaCad(temporal, v[i + 1]);
 	copiaCad(v[i + 1], v[i]);
 	copiaCad(v[i], temporal);
+}
+
+void seleccion(int c, char* v[]){
+	int i,j;
+	
+	int formato = v[c - 1][0] == 'A'? 1 : -1;
+	
+   //Recorrer el arreglo
+	for (i = 2; i < (c - 3); i++){
+		char clave[length(v[i]) + 1];
+		copiaCad(clave, v[i]);
+		j = i-1;
+		//Comparar el valor selecionado con todos los valores anteriores
+		while (j >= 1 && comparaCads(*(v + j), clave) == formato){
+			//Insertar el valor donde corresponda
+			copiaCad(*(v + j + 1), *(v + j));
+			--j;
+		}
+		copiaCad(*(v+j+1), clave);
+	}    
+	
+	
 }
