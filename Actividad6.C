@@ -26,7 +26,8 @@ int main(int argc, char* argv[]){
 	
 	//insercionNumeros(argc, argv);
 	//insercionNumeros(argc, argv);
-	seleccion(argc, argv);
+	//seleccion(argc, argv);
+	seleccionNumeros(argc, argv);
 	
 	int i;
 	//for (i = 1; i < argc - 3; i++)
@@ -226,7 +227,7 @@ void insercionNumeros(int c, char* v[]){
 	}
 }
 
-void seleccionNumeros(int c, char* v[]){
+void seleccion(int c, char* v[]){
 	
 	int i, j, limite;
 	
@@ -238,6 +239,31 @@ void seleccionNumeros(int c, char* v[]){
 		
 		for (int j = i + 1; j < (c - ARGUMENTOS); j++){
 			if (comparaCads(v[limite], v[j]) == formato){
+				limite = j;
+			}
+		}
+		
+		intercambiar(v, i, limite);
+	}	
+}
+
+void seleccionNumeros(int c, char* v[]){
+	
+	int i, j, limite, a, b;
+	
+	char formato = v[c - 1][0];
+	
+	
+	for (i = 1; i < (c - ARGUMENTOS); i++){
+		
+		limite = i;
+		
+		for (int j = i + 1; j < (c - ARGUMENTOS); j++){
+			
+			a = strtol(v[limite], NULL, 10);
+	       	b = strtol(v[j], NULL, 10);
+			
+			if (comparaNums(a,b) == formato){
 				limite = j;
 			}
 		}
