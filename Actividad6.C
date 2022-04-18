@@ -1,16 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define ARGUMENTOS 3
+
 int ordenable(int, char*[]);
 int length(char*);
-int comparaCads(char*, char*);
+char comparaCads(char*, char*);
 char comparaNums(int, int);
 char* copiaCad(char*, char*);
 void burbuja(int, char*[]);
-void burbujaNumeros(int, char*[]);
-void intercambiar(char*[], int);
+void intercambiar(char*[], int, int);
 void insercion(int, char*[]);
 void insercionNumeros(int, char*[]);
+void seleccion(int, char*[]);
+void seleccionNumeros(int, char*[]);
 
 int main(int argc, char* argv[]){
 	
@@ -20,9 +23,10 @@ int main(int argc, char* argv[]){
 		printf("\nNo se puede ordenar\n\n");
 	
 	//burbuja(argc, argv);
-	//burbujaNumeros(argc, argv);
-	//insercion(argc, argv);
-	insercionNumeros(argc, argv);
+	
+	//insercionNumeros(argc, argv);
+	//insercionNumeros(argc, argv);
+	seleccion(argc, argv);
 	
 	int i;
 	//for (i = 1; i < argc - 3; i++)
@@ -46,7 +50,7 @@ int main(int argc, char* argv[]){
 int ordenable(int c, char* v[]){
 	
 	//Verificar que hay al menos dos cadenas y los tres argumentos
-	if (c <= 5){
+	if (c < 6){
 		printf("\nError: No hay cadenas suficientes para ordenar\n");
 		return 0;
 	}
@@ -91,30 +95,54 @@ int length(char *string){
 	return i;
 }
 
-int comparaCads(char* cad1, char* cad2){
+char* copiaCad(char* cad1, char* cad2){
+	int i = 0;
+	
+	while (*(cad2 + i) != '\0'){
+		*(cad1 + i) = *(cad2 + i);
+		i++;
+	}
+	
+	*(cad1 + i) = '\0'; //Cerrar la cadena
+		
+	return cad1;
+}
+
+void intercambiar(char* v[], int i, int j){
+	char temporal[length(v[j]) + 1];
+	          	
+	copiaCad(temporal, v[j]);
+	copiaCad(v[j], v[i]);
+	copiaCad(v[i], temporal);
+}
+
+char comparaCads(char* cad1, char* cad2){
 	int i = 0;
 	
 	char a, b;
 	
 	while (*(cad1 + i) != '\0' && *(cad2 + i) != '\0'){
 		
+		//Si son letras minúsculas, tomar el valor de la misma letra en mayúscula.
 		a = (*(cad1 + i) > 96 && *(cad1 + i) < 123) ? *(cad1 + i) - 32 : *(cad1 + i);
 		b = (*(cad2 + i) > 96 && *(cad2 + i) < 123) ? *(cad2 + i) - 32 : *(cad2 + i);
 		
-		if (a < b)
-			return -1;
-		else if (a > b)
-			return 1;
+		//Comparar letra a letras, siempre van a ser sus valores de mayúsculas
+		if (a > b)
+			return 'A';
+		else if (a < b)
+			return 'D';
 		
 		i++;
 		
+		//Si se acaba una palabra antes que la otra, retornar la menor.
 		if (*(cad1 + i) == '\0')
-			return -1;
+			return 'D';
 		if (*(cad2 + i) == '\0')
-			return 1;
+			return 'A';
 	}
 	
-	return 0;
+	return 'N';
 }
 
 char comparaNums(int a, int b){
@@ -129,82 +157,59 @@ char comparaNums(int a, int b){
 
 void burbuja(int c, char* v[]){
 	
-	int i,j;
-	
-	int formato = v[c - 1][0] == 'A'? 1 : -1;
-
-	for (i = 1; i < c; i++){
-	       for (j = 1; j < (c - 4); j++){
-	       	if (comparaCads(v[j], v[j + 1]) == formato)
-	       		intercambiar(v, j);
-		}
-	}
-}
-
-void burbujaNumeros(int c, char* v[]){
 	int i,j, a, b;
+	
+	char formato = v[c - 1][0];
+	char tipo = v[c - 3][0];
 
 	for (i = 1; i < c; i++){
-	       for (j = 1; j < (c - 4); j++){
-	       	a = strtol(v[j], NULL, 10);
-	       	b = strtol(v[j + 1], NULL, 10);
-	       	
-	       	if (v[c - 1][0] == 'A'){
-	       		if (a > b)
-	       			intercambiar(v, j);
+	    for (j = 1; j < (c - (ARGUMENTOS + 1)); j++){
+	    	
+	    	if (tipo == 'C'){
+	    		
+	    		if (comparaCads(v[j], v[j + 1]) == formato)
+		       		intercambiar(v, j, j + 1);
+	    		
 			}else {
-				if (a < b)
-	       			intercambiar(v, j);
+				a = strtol(v[j], NULL, 10);
+	       		b = strtol(v[j + 1], NULL, 10);
+	       	
+	       		if (comparaNums(a, b) == formato)
+	       			intercambiar(v, j, j+1);
 			}
 		}
 	}
-	
-}
-
-char* copiaCad(char* cad1, char* cad2){
-	int i = 0;
-	
-	while (*(cad2 + i) != '\0'){
-		*(cad1 + i) = *(cad2 + i);
-		i++;
-	}
-	
-	*(cad1 + i) = '\0'; //Cerrar la cadena
-		
-	return cad1;
-}
-
-void intercambiar(char* v[], int i){
-	char temporal[length(v[i + 1]) + 1];
-	          	
-	copiaCad(temporal, v[i + 1]);
-	copiaCad(v[i + 1], v[i]);
-	copiaCad(v[i], temporal);
 }
 
 void insercion(int c, char* v[]){
-	int i,j;
+	int i, j;
 	
-	int formato = v[c - 1][0] == 'A'? 1 : -1;
-	
+	char formato = v[c - 1][0];
+			
    //Recorrer el arreglo
-	for (i = 2; i < (c - 3); i++){
+	for (i = 2; i < (c - ARGUMENTOS); i++){
+		
 		char clave[length(v[i]) + 1];
 		copiaCad(clave, v[i]);
+				
 		j = i-1;
+		
 		//Comparar el valor selecionado con todos los valores anteriores
-		while (j >= 1 && comparaCads(*(v + j), clave) == formato){
+		while (j >= 1 && comparaCads(v[j], clave) == formato){
 			//Insertar el valor donde corresponda
-			copiaCad(*(v + j + 1), *(v + j));
+			copiaCad(v[j + 1], v[j]);
 			--j;
 		}
-		copiaCad(*(v+j+1), clave);
+		copiaCad(v[j + 1], clave);	
 	}
 }
 
 void insercionNumeros(int c, char* v[]){
+	
 	int i,j,claveNumero;
-   //Recorrer el arreglo
+	char formato = v[c - 1][0];
+   	//Recorrer el arreglo
+   	
 	for (i = 2; i < (c - 3); i++){
 		char clave[length(v[i]) + 1];
 		copiaCad(clave, v[i]);
@@ -212,7 +217,7 @@ void insercionNumeros(int c, char* v[]){
 		claveNumero = strtol(v[i], NULL, 10);
 		j = i-1;
 		//Comparar el valor selecionado con todos los valores anteriores
-		while (j >= 1 && comparaNums(strtol(v[j], NULL, 10), claveNumero) ==  v[c - 1][0]){
+		while (j >= 1 && comparaNums(strtol(v[j], NULL, 10), claveNumero) ==  formato){
 			//Desplazar el valor una posición a la derecha
 			copiaCad(v[j + 1], v[j]);
 			--j;
@@ -221,3 +226,24 @@ void insercionNumeros(int c, char* v[]){
 	}
 }
 
+void seleccionNumeros(int c, char* v[]){
+	
+	int i, j, limite;
+	
+	char formato = v[c - 1][0];
+	
+	for (i = 1; i < (c - ARGUMENTOS); i++){
+		
+		limite = i;
+		
+		for (int j = i + 1; j < (c - ARGUMENTOS); j++){
+			if (comparaCads(v[limite], v[j]) == formato){
+				limite = j;
+			}
+		}
+		
+		intercambiar(v, i, limite);
+	}
+	
+	
+}
