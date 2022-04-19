@@ -272,4 +272,32 @@ void seleccionNumeros(int c, char* v[]){
 	}
 }
 
+void Shell(int n , int v[])
+{
+   int i , j , k , salto, aux, fin;
+	
+   salto = n;
+   
+   while ( salto > 0 )
+   {
+      salto = salto / 2;
+      do
+      {
+         fin = 1;
+         k  = n - salto;
+         for ( i = 0 ; i < k ; i++ )
+         {
+            j = i + salto ;
+            if ( v[i] < v[j] )
+            {
+                aux = v[i];
+				v[i] = v[j];
+				v[j] = aux;
+				fin = 0;
+             }
+          }
+       }
+       while ( fin == 0);
+    }
+}
 
