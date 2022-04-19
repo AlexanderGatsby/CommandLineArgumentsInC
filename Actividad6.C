@@ -27,7 +27,7 @@ int main(int argc, char* argv[]){
 	//insercionNumeros(argc, argv);
 	//insercionNumeros(argc, argv);
 	//seleccion(argc, argv);
-	seleccionNumeros(argc, argv);
+	//seleccionNumeros(argc, argv);
 	
 	int i;
 	//for (i = 1; i < argc - 3; i++)
@@ -270,6 +270,6 @@ void seleccionNumeros(int c, char* v[]){
 		
 		intercambiar(v, i, limite);
 	}
-	
-	
 }
+
+
