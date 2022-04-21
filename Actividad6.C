@@ -310,12 +310,13 @@ void seleccionNumeros(int c, char* v[]){
 
 void shell(int c , char* v[])
 {
-   int i , j , k , salto, aux, bandera;
+   int i , j , k , salto, aux, bandera, a, b;
 
    salto = (c - ARGUMENTOS);
    
    char formato = v[c - 1][0];
-   
+   char tipo = v[c - 3][0];
+      
    while ( salto > 0 )
    {
       salto = salto / 2;
@@ -326,13 +327,23 @@ void shell(int c , char* v[])
          for ( i = 1 ; i < k ; i++)
          {
             j = i + salto ;
-            if (comparaCads(v[i], v[j]) == formato)
-            //if (v[i][0] > v[j][0])
-            {
-            	intercambiar(v, i, j);
-				bandera = 0;
-				//printf("so%c%c otra vez contigo\n", 164, 130);
-            }
+            
+            if (tipo == 'C'){
+            	if (comparaCads(v[i], v[j]) == formato)
+            	{
+            		intercambiar(v, i, j);
+					bandera = 0;
+            	}
+			}else{
+				a = strtol(v[i], NULL, 10);
+				b = strtol(v[j], NULL, 10);
+				
+				if (comparaNums(a,b) == formato)
+            	{
+            		intercambiar(v, i, j);
+					bandera = 0;
+            	}
+			}
           }
        }
        while ( bandera == 0);
