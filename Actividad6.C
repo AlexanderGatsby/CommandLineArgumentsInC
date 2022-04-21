@@ -11,10 +11,8 @@ char* copiaCad(char*, char*);
 void burbuja(int, char*[]);
 void intercambiar(char*[], int, int);
 void insercion(int, char*[]);
-void insercionNumeros(int, char*[]);
 void seleccion(int, char*[]);
 void shell(int, char*[]);
-void imprimir(int, char*[]);
 
 int main(int argc, char* argv[]){
 	
@@ -29,10 +27,7 @@ int main(int argc, char* argv[]){
 			break;
 			
 			case 'I':
-				if (tipo == 'C')
-					insercion(argc, argv);	
-				else				
-					insercionNumeros(argc, argv);
+				insercion(argc, argv);
 			break;
 			
 			case 'S':
@@ -43,36 +38,15 @@ int main(int argc, char* argv[]){
 				shell(argc, argv);
 			break;	
 		}
-		
-		int i;
-		for (i = 1; i < argc - 3; i++)
-		//for (i = 0; i < argc; i++)
+	
+		for (int i = 1; i < argc - 3; i++)
 		printf("%s\n", *(argv+i));
+		
 	}else
 		printf("\nNo se puede ordenar\n\n");
-		
-	
-	
-	
-	
-	
-	
-	//shell(argc, argv);
-	
-	
-	
-	//printf("\n%c Ponemos el acento o tilde en canel%cn\n",162, 162); //ó
-	//Es decir, invocar el código de carácter que corresponde a la letra acentuada...
-
-	//Códigos:
-
-	//á: 160 é: 130 í: 161 ó: 162 ú: 163 Á: 181 É: 144 Í: 214 Ó: 224 Ú: 223 ñ: 164 Ñ: 165
-	
 	
 	return 0;
 }
-
-
 
 int ordenable(int c, char* v[]){
 	
@@ -90,11 +64,7 @@ int ordenable(int c, char* v[]){
 	}
 	
 	switch (v[(c - 2)][0]){
-		case 'B':
-		case 'I':
-		case 'S':
-		case 'D':
-		
+		case 'B': case 'I':	case 'S': case 'D':
 		break;
 		
 		default:
@@ -143,13 +113,6 @@ void intercambiar(char* v[], int i, int j){
 	copiaCad(v[i], temporal);
 }
 
-void imprimir(char* v[], int c){
-	int i;
-	for (i = 1; i < c - 3; i++)
-	//for (i = 0; i < argc; i++)
-		printf("%s\n", *(v+i));
-}
-
 char comparaCads(char* cad1, char* cad2){
 	int i = 0;
 	
@@ -179,7 +142,6 @@ char comparaCads(char* cad1, char* cad2){
 }
 
 char comparaNums(int a, int b){
-	
 	if (a > b)
 		return 'A';
 	else if (a < b)
@@ -215,9 +177,10 @@ void burbuja(int c, char* v[]){
 }
 
 void insercion(int c, char* v[]){
-	int i, j;
+	int i, j, claveNumero;
 	
 	char formato = v[c - 1][0];
+	char tipo = v[c - 3][0];
 			
    //Recorrer el arreglo
 	for (i = 2; i < (c - ARGUMENTOS); i++){
@@ -227,35 +190,24 @@ void insercion(int c, char* v[]){
 				
 		j = i-1;
 		
-		//Comparar el valor selecionado con todos los valores anteriores
-		while (j >= 1 && comparaCads(v[j], clave) == formato){
-			//Insertar el valor donde corresponda
-			copiaCad(v[j + 1], v[j]);
-			--j;
+		if (tipo == 'C'){
+			//Comparar el valor selecionado con todos los valores anteriores
+			while (j >= 1 && comparaCads(v[j], clave) == formato){
+				//Insertar el valor donde corresponda
+				copiaCad(v[j + 1], v[j]);
+				--j;
+			}
+			copiaCad(v[j + 1], clave);
+		}else {
+			claveNumero = strtol(v[i], NULL, 10);
+			//Comparar el valor selecionado con todos los valores anteriores
+			while (j >= 1 && comparaNums(strtol(v[j], NULL, 10), claveNumero) ==  formato){
+				//Desplazar el valor una posición a la derecha
+				copiaCad(v[j + 1], v[j]);
+				--j;
+			}
+				copiaCad(v[j + 1], clave);
 		}
-		copiaCad(v[j + 1], clave);	
-	}
-}
-
-void insercionNumeros(int c, char* v[]){
-	
-	int i,j,claveNumero;
-	char formato = v[c - 1][0];
-   	//Recorrer el arreglo
-   	
-	for (i = 2; i < (c - 3); i++){
-		char clave[length(v[i]) + 1];
-		copiaCad(clave, v[i]);
-		
-		claveNumero = strtol(v[i], NULL, 10);
-		j = i-1;
-		//Comparar el valor selecionado con todos los valores anteriores
-		while (j >= 1 && comparaNums(strtol(v[j], NULL, 10), claveNumero) ==  formato){
-			//Desplazar el valor una posición a la derecha
-			copiaCad(v[j + 1], v[j]);
-			--j;
-		}
-		copiaCad(v[j + 1], clave);
 	}
 }
 
