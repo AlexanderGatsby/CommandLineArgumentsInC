@@ -22,6 +22,7 @@ int main(int argc, char* argv[]){
 	if (ordenable(argc, argv) == 1){
 		
 		char opcion = argv[argc-2][0];
+		char tipo = argv[argc-3][0];
 		
 		switch(opcion){
 			case 'B':
@@ -29,26 +30,32 @@ int main(int argc, char* argv[]){
 			break;
 			
 			case 'I':
-				insercion(argc, argv);
-				insercionNumeros(argc, argv);
+				if (tipo == 'C')
+					insercion(argc, argv);	
+				else				
+					insercionNumeros(argc, argv);
 			break;
 			
 			case 'S':
-				seleccion(argc, argv);
-				seleccionNumeros(argc, argv);
+				if (tipo == 'C')
+					seleccion(argc, argv);
+				else
+					seleccionNumeros(argc, argv);
 			break;
 			
 			case 'D':
-				printf("\nTe la pelas, porque todavía no la implimenté");
+				shell(argc, argv);
 			break;	
-		}	
+		}
+		
+		int i;
+		for (i = 1; i < argc - 3; i++)
+		//for (i = 0; i < argc; i++)
+		printf("%s\n", *(argv+i));
 	}else
 		printf("\nNo se puede ordenar\n\n");
 		
-	int i;
-	for (i = 1; i < argc - 3; i++)
-	//for (i = 0; i < argc; i++)
-		printf("%s\n", *(argv+i));
+	
 	
 	
 	
@@ -165,13 +172,12 @@ char comparaCads(char* cad1, char* cad2){
 			return 'D';
 		
 		i++;
-		
-		//Si se acaba una palabra antes que la otra, retornar la menor.
-		if (*(cad1 + i) == '\0')
-			return 'D';
-		if (*(cad2 + i) == '\0')
-			return 'A';
 	}
+	
+	if (length(cad1) > length(cad2))
+		return 'A';
+	else if (length(cad1) < length(cad2))
+		return 'D';
 	
 	return 'N';
 }
@@ -321,10 +327,11 @@ void shell(int c , char* v[])
          {
             j = i + salto ;
             if (comparaCads(v[i], v[j]) == formato)
+            //if (v[i][0] > v[j][0])
             {
             	intercambiar(v, i, j);
 				bandera = 0;
-				printf("so%c%c otra vez contigo\n", 164, 130);
+				//printf("so%c%c otra vez contigo\n", 164, 130);
             }
           }
        }
