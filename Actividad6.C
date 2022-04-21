@@ -19,8 +19,7 @@ int main(int argc, char* argv[]){
 	if (ordenable(argc, argv) == 1){
 		
 		char opcion = argv[argc-2][0];
-		char tipo = argv[argc-3][0];
-		
+				
 		switch(opcion){
 			case 'B':
 				burbuja(argc, argv);
@@ -41,9 +40,7 @@ int main(int argc, char* argv[]){
 	
 		for (int i = 1; i < argc - 3; i++)
 		printf("%s\n", *(argv+i));
-		
-	}else
-		printf("\nNo se puede ordenar\n\n");
+	}
 	
 	return 0;
 }
