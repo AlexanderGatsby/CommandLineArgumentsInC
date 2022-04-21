@@ -13,7 +13,6 @@ void intercambiar(char*[], int, int);
 void insercion(int, char*[]);
 void insercionNumeros(int, char*[]);
 void seleccion(int, char*[]);
-void seleccionNumeros(int, char*[]);
 void shell(int, char*[]);
 void imprimir(int, char*[]);
 
@@ -37,10 +36,7 @@ int main(int argc, char* argv[]){
 			break;
 			
 			case 'S':
-				if (tipo == 'C')
-					seleccion(argc, argv);
-				else
-					seleccionNumeros(argc, argv);
+				seleccion(argc, argv);
 			break;
 			
 			case 'D':
@@ -265,47 +261,31 @@ void insercionNumeros(int c, char* v[]){
 
 void seleccion(int c, char* v[]){
 	
-	int i, j, limite;
-	
-	char formato = v[c - 1][0];
-	
-	for (i = 1; i < (c - ARGUMENTOS); i++){
-		
-		limite = i;
-		
-		for (int j = i + 1; j < (c - ARGUMENTOS); j++){
-			if (comparaCads(v[limite], v[j]) == formato){
-				limite = j;
-			}
-		}
-		
-		intercambiar(v, i, limite);
-	}	
-}
-
-void seleccionNumeros(int c, char* v[]){
-	
 	int i, j, limite, a, b;
 	
 	char formato = v[c - 1][0];
-	
+	char tipo = v[c - 3][0];
 	
 	for (i = 1; i < (c - ARGUMENTOS); i++){
 		
 		limite = i;
 		
 		for (int j = i + 1; j < (c - ARGUMENTOS); j++){
+			if (tipo == 'C'){
+				if (comparaCads(v[limite], v[j]) == formato){
+					limite = j;
+				}	
+			} else{
+				a = strtol(v[limite], NULL, 10);
+	       		b = strtol(v[j], NULL, 10);
 			
-			a = strtol(v[limite], NULL, 10);
-	       	b = strtol(v[j], NULL, 10);
-			
-			if (comparaNums(a,b) == formato){
-				limite = j;
-			}
+				if (comparaNums(a,b) == formato){
+					limite = j;
+				}
+			}	
 		}
-		
 		intercambiar(v, i, limite);
-	}
+	}	
 }
 
 void shell(int c , char* v[])
