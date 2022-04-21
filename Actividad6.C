@@ -14,25 +14,48 @@ void insercion(int, char*[]);
 void insercionNumeros(int, char*[]);
 void seleccion(int, char*[]);
 void seleccionNumeros(int, char*[]);
+void shell(int, char*[]);
+void imprimir(int, char*[]);
 
 int main(int argc, char* argv[]){
 	
-	if (ordenable(argc, argv) == 1)
-		printf("\nEs ordenable\n\n");
-	else
+	if (ordenable(argc, argv) == 1){
+		
+		char opcion = argv[argc-2][0];
+		
+		switch(opcion){
+			case 'B':
+				burbuja(argc, argv);
+			break;
+			
+			case 'I':
+				insercion(argc, argv);
+				insercionNumeros(argc, argv);
+			break;
+			
+			case 'S':
+				seleccion(argc, argv);
+				seleccionNumeros(argc, argv);
+			break;
+			
+			case 'D':
+				printf("\nTe la pelas, porque todavía no la implimenté");
+			break;	
+		}	
+	}else
 		printf("\nNo se puede ordenar\n\n");
-	
-	//burbuja(argc, argv);
-	
-	//insercionNumeros(argc, argv);
-	//insercionNumeros(argc, argv);
-	//seleccion(argc, argv);
-	//seleccionNumeros(argc, argv);
-	
+		
 	int i;
-	//for (i = 1; i < argc - 3; i++)
-	for (i = 0; i < argc; i++)
+	for (i = 1; i < argc - 3; i++)
+	//for (i = 0; i < argc; i++)
 		printf("%s\n", *(argv+i));
+	
+	
+	
+	
+	
+	//shell(argc, argv);
+	
 	
 	
 	//printf("\n%c Ponemos el acento o tilde en canel%cn\n",162, 162); //ó
@@ -115,6 +138,13 @@ void intercambiar(char* v[], int i, int j){
 	copiaCad(temporal, v[j]);
 	copiaCad(v[j], v[i]);
 	copiaCad(v[i], temporal);
+}
+
+void imprimir(char* v[], int c){
+	int i;
+	for (i = 1; i < c - 3; i++)
+	//for (i = 0; i < argc; i++)
+		printf("%s\n", *(v+i));
 }
 
 char comparaCads(char* cad1, char* cad2){
@@ -272,32 +302,33 @@ void seleccionNumeros(int c, char* v[]){
 	}
 }
 
-void Shell(int n , int v[])
+void shell(int c , char* v[])
 {
-   int i , j , k , salto, aux, fin;
-	
-   salto = n;
+   int i , j , k , salto, aux, bandera;
+
+   salto = (c - ARGUMENTOS);
+   
+   char formato = v[c - 1][0];
    
    while ( salto > 0 )
    {
       salto = salto / 2;
       do
       {
-         fin = 1;
-         k  = n - salto;
-         for ( i = 0 ; i < k ; i++ )
+         bandera = 1;
+         k  = (c - ARGUMENTOS) - salto;
+         for ( i = 1 ; i < k ; i++)
          {
             j = i + salto ;
-            if ( v[i] < v[j] )
+            if (comparaCads(v[i], v[j]) == formato)
             {
-                aux = v[i];
-				v[i] = v[j];
-				v[j] = aux;
-				fin = 0;
-             }
+            	intercambiar(v, i, j);
+				bandera = 0;
+				printf("so%c%c otra vez contigo\n", 164, 130);
+            }
           }
        }
-       while ( fin == 0);
+       while ( bandera == 0);
     }
 }
 
