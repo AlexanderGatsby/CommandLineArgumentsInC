@@ -38,8 +38,9 @@ int main(int argc, char* argv[]){
 			break;	
 		}
 	
+		//Imprimir lista
 		for (int i = 1; i < argc - 3; i++)
-		printf("%s\n", *(argv+i));
+			printf("%s\n", *(argv+i));
 	}
 	
 	return 0;
