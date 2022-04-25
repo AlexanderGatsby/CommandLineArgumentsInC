@@ -48,7 +48,7 @@ int main(int argc, char* argv[]){
 
 int ordenable(int c, char* v[]){
 	
-	//Verificar que hay al menos dos cadenas y los tres argumentos
+	//Verificar que está el nombre del programa, al menos dos cadenas y tres argumentos.
 	if (c < 6){
 		printf("\nError: No hay cadenas suficientes para ordenar\n");
 		return 0;
@@ -90,6 +90,7 @@ int length(char *string){
 	return i;
 }
 
+//Copia la segunda cadena en la primera cadena
 char* copiaCad(char* cad1, char* cad2){
 	int i = 0;
 	
@@ -103,6 +104,7 @@ char* copiaCad(char* cad1, char* cad2){
 	return cad1;
 }
 
+//Intercambia dos cadenas de lugar
 void intercambiar(char* v[], int i, int j){
 	char temporal[length(v[j]) + 1];
 	          	
@@ -122,7 +124,7 @@ char comparaCads(char* cad1, char* cad2){
 		a = (*(cad1 + i) > 96 && *(cad1 + i) < 123) ? *(cad1 + i) - 32 : *(cad1 + i);
 		b = (*(cad2 + i) > 96 && *(cad2 + i) < 123) ? *(cad2 + i) - 32 : *(cad2 + i);
 		
-		//Comparar letra a letras, siempre van a ser sus valores de mayúsculas
+		//Comparar cuál de las dos aparece antes y regresar un orden A o D respecto al primer elemento.
 		if (a > b)
 			return 'A';
 		else if (a < b)
@@ -130,7 +132,7 @@ char comparaCads(char* cad1, char* cad2){
 		
 		i++;
 	}
-	
+	//Si son iguales lexicográficamente, primero debe aparecer la cadena más pequeña.
 	if (length(cad1) > length(cad2))
 		return 'A';
 	else if (length(cad1) < length(cad2))
@@ -144,7 +146,6 @@ char comparaNums(int a, int b){
 		return 'A';
 	else if (a < b)
 		return 'D';
-	
 	return 'N';	
 }
 
@@ -155,7 +156,7 @@ void burbuja(int c, char* v[]){
 	char formato = v[c - 1][0];
 	char tipo = v[c - 3][0];
 
-	for (i = 1; i < c; i++){
+	for (i = 1; i < (c - ARGUMENTOS); i++){
 	    for (j = 1; j < (c - (ARGUMENTOS + 1)); j++){
 	    	
 	    	if (tipo == 'C'){
@@ -196,6 +197,7 @@ void insercion(int c, char* v[]){
 				--j;
 			}
 			copiaCad(v[j + 1], clave);
+			
 		}else {
 			claveNumero = strtol(v[i], NULL, 10);
 			//Comparar el valor selecionado con todos los valores anteriores
@@ -238,43 +240,36 @@ void seleccion(int c, char* v[]){
 	}	
 }
 
-void shell(int c , char* v[])
-{
-   int i , j , k , salto, aux, bandera, a, b;
+void shell(int c , char* v[]){
+
+   int i , salto, bandera, a, b;
+   char formato = v[c - 1][0];
+   char tipo = v[c - 3][0];
 
    salto = (c - ARGUMENTOS);
    
-   char formato = v[c - 1][0];
-   char tipo = v[c - 3][0];
-      
-   while ( salto > 0 )
-   {
-      salto = salto / 2;
-      do
-      {
-         bandera = 1;
-         k  = (c - ARGUMENTOS) - salto;
-         for ( i = 1 ; i < k ; i++)
-         {
-            j = i + salto ;
-            
-            if (tipo == 'C'){
-            	if (comparaCads(v[i], v[j]) == formato)
-            	{
-            		intercambiar(v, i, j);
-					bandera = 0;
-            	}
-			}else{
-				a = strtol(v[i], NULL, 10);
-				b = strtol(v[j], NULL, 10);
-				
-				if (comparaNums(a,b) == formato)
-            	{
-            		intercambiar(v, i, j);
-					bandera = 0;
-            	}
-			}
-          }
+   while (salto > 0){
+   	
+      salto /= 2;
+      do{
+	        bandera = 1;
+	        
+	        for ( i = 1 ; i < (c - ARGUMENTOS) - salto; i++){
+	            if (tipo == 'C'){
+	            	if (comparaCads(v[i], v[i + salto]) == formato){
+	            		intercambiar(v, i, i + salto);
+						bandera = 0;
+	            	}
+				}else{
+					a = strtol(v[i], NULL, 10);
+					b = strtol(v[i + salto], NULL, 10);
+					
+					if (comparaNums(a,b) == formato){
+	            		intercambiar(v, i, i + salto);
+						bandera = 0;
+	            	}
+				}
+	       }
        }
        while ( bandera == 0);
     }
